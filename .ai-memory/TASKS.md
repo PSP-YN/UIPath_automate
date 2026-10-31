@@ -2,8 +2,8 @@
 Keep at most 15 entries; move older ones to TASKS.archive.md.
 
 ## Current goal
-- Publish two free human-reviewed workflow prototypes from the supplied contest regulations.
+- None recorded.
 
 ## Log
-- 2026-10-31: Built invoice-review and support-triage prototypes with a local CLI, SQLite audit trail, approval/rejection actions, optional loopback-only Ollama analysis, sample data, README, and tests. Verification: 12 unit tests, bytecode compilation, and end-to-end CLI smoke checks passed. Next: commit and publish `UIPath_automate` as a public GitHub repository.
+- 2026-10-31: Built and published the invoice-review and support-triage prototypes as public `PSP-YN/UIPath_automate`. Files: workflow package, tests, sample inputs, README, and project notes. Verification: 12 unit tests, bytecode compilation, CLI demo/re-run/approval/audit smoke checks, GitHub visibility `PUBLIC`, and clean `main` tracking `origin/main`. Next: none.
 - 2026-10-31: AgentKit memory initialised. Verification: generated memory files inspected. Next: none.
