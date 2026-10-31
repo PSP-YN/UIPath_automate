@@ -1,0 +1,11 @@
+{
+  "vendor": "Northstar Office Supply",
+  "invoice_number": "NS-2026-1042",
+  "invoice_date": "2026-10-28",
+  "due_date": "2026-11-27",
+  "currency": "USD",
+  "subtotal": "920.00",
+  "tax": "73.60",
+  "total": "993.60",
+  "description": "Replacement laptop docks and cables"
+}
