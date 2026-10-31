@@ -7,3 +7,10 @@ Global rules come from the user's AgentKit. Project specifics:
 - Run the commands listed in PROJECT.md. Never claim a check passed unless you ran it.
 - Never put secrets in memory files, docs or commits.
 <!-- AGENTKIT-PROJECT-END -->
+
+## Product UI direction
+
+- Read `DESIGN.md` before changing the landing page or workspace UI.
+- Keep claims tied to implemented behavior. Do not invent customer proof, operational metrics, or compliance certifications.
+- Preserve human approval gates. The app does not send messages, create accounts, issue payments, place orders, or change external systems.
+- Keep the sample experience clearly identified as a demo, separate from authenticated company records.

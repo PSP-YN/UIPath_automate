@@ -1,0 +1,209 @@
+[
+  {
+    "id": "invoice-review",
+    "name": "Supplier invoice review",
+    "area": "Finance",
+    "description": "Check invoice arithmetic and dates before a reviewer prepares a manual payment instruction.",
+    "reviewer": "Finance reviewer",
+    "gated_action": "A payment instruction for manual processing. No payment is sent.",
+    "fields": [
+      {"id":"vendor","label":"Supplier","type":"text","required":true,"maxLength":160},
+      {"id":"invoice_number","label":"Invoice number","type":"text","required":true,"maxLength":100},
+      {"id":"invoice_date","label":"Invoice date","type":"date","required":true},
+      {"id":"due_date","label":"Due date","type":"date","required":true},
+      {"id":"currency","label":"Currency","type":"select","required":true,"options":["USD","EUR","GBP","INR","CAD","AUD"]},
+      {"id":"subtotal","label":"Subtotal","type":"number","required":true,"min":0},
+      {"id":"tax","label":"Tax","type":"number","required":true,"min":0},
+      {"id":"total","label":"Total","type":"number","required":true,"min":0},
+      {"id":"description","label":"What was supplied?","type":"textarea","required":true,"maxLength":1000}
+    ]
+  },
+  {
+    "id": "support-triage",
+    "name": "Customer support triage",
+    "area": "Customer operations",
+    "description": "Classify an incoming request, route it to a team, and prepare a reply for review.",
+    "reviewer": "Support lead",
+    "gated_action": "An approved reply draft. No message is sent.",
+    "fields": [
+      {"id":"ticket_id","label":"Ticket reference","type":"text","required":true,"maxLength":100},
+      {"id":"customer_name","label":"Customer name","type":"text","required":true,"maxLength":160},
+      {"id":"customer_email","label":"Customer email","type":"email","required":false,"maxLength":254},
+      {"id":"subject","label":"Subject","type":"text","required":true,"maxLength":200},
+      {"id":"message","label":"Request","type":"textarea","required":true,"maxLength":5000}
+    ]
+  },
+  {
+    "id": "purchase-request",
+    "name": "Purchase request",
+    "area": "Procurement",
+    "description": "Compare a requested purchase with the available budget and prepare an approval record.",
+    "reviewer": "Budget owner",
+    "gated_action": "An approved purchase instruction for manual processing. No order is placed.",
+    "fields": [
+      {"id":"requester_email","label":"Requester email","type":"email","required":true,"maxLength":254},
+      {"id":"department","label":"Department","type":"text","required":true,"maxLength":120},
+      {"id":"vendor","label":"Supplier","type":"text","required":true,"maxLength":160},
+      {"id":"item","label":"Item or service","type":"text","required":true,"maxLength":240},
+      {"id":"requested_amount","label":"Requested amount","type":"number","required":true,"min":0},
+      {"id":"budget_available","label":"Available budget","type":"number","required":true,"min":0,"help":"Enter the budget figure from your organization."},
+      {"id":"currency","label":"Currency","type":"select","required":true,"options":["USD","EUR","GBP","INR","CAD","AUD"]},
+      {"id":"business_reason","label":"Business reason","type":"textarea","required":true,"maxLength":1200}
+    ]
+  },
+  {
+    "id": "expense-reimbursement",
+    "name": "Expense reimbursement",
+    "area": "Finance",
+    "description": "Check a submitted expense against the employee-provided receipt reference and policy cap.",
+    "reviewer": "Expense approver",
+    "gated_action": "An approved reimbursement record for manual processing. No reimbursement is issued.",
+    "fields": [
+      {"id":"employee_email","label":"Employee email","type":"email","required":true,"maxLength":254},
+      {"id":"expense_date","label":"Expense date","type":"date","required":true},
+      {"id":"category","label":"Expense category","type":"select","required":true,"options":["Travel","Meals","Equipment","Software","Other"]},
+      {"id":"amount","label":"Amount","type":"number","required":true,"min":0},
+      {"id":"currency","label":"Currency","type":"select","required":true,"options":["USD","EUR","GBP","INR","CAD","AUD"]},
+      {"id":"policy_cap","label":"Policy approval cap","type":"number","required":true,"min":0,"help":"Use the cap set by your organization; this workflow does not define policy."},
+      {"id":"receipt_reference","label":"Receipt reference","type":"text","required":false,"maxLength":300},
+      {"id":"business_purpose","label":"Business purpose","type":"textarea","required":true,"maxLength":1000}
+    ]
+  },
+  {
+    "id": "employee-onboarding",
+    "name": "Employee onboarding",
+    "area": "People operations",
+    "description": "Coordinate a new starter's checklist and route access and equipment requests to a manager.",
+    "reviewer": "Hiring manager",
+    "gated_action": "An approved onboarding checklist. No accounts are created and no equipment is ordered.",
+    "fields": [
+      {"id":"employee_name","label":"Employee name","type":"text","required":true,"maxLength":160},
+      {"id":"work_email","label":"Work email","type":"email","required":true,"maxLength":254},
+      {"id":"start_date","label":"Start date","type":"date","required":true},
+      {"id":"department","label":"Department","type":"text","required":true,"maxLength":120},
+      {"id":"manager_email","label":"Manager email","type":"email","required":true,"maxLength":254},
+      {"id":"access_profile","label":"Requested access profile","type":"select","required":true,"options":["Standard","Finance","Engineering","Administrator"]}
+    ]
+  },
+  {
+    "id": "leave-request",
+    "name": "Leave request",
+    "area": "People operations",
+    "description": "Validate requested dates and send a complete leave request to the named manager for review.",
+    "reviewer": "Line manager",
+    "gated_action": "An approved leave decision record. No calendar or payroll system is changed.",
+    "fields": [
+      {"id":"employee_email","label":"Employee email","type":"email","required":true,"maxLength":254},
+      {"id":"leave_type","label":"Leave type","type":"select","required":true,"options":["Annual","Sick","Personal","Unpaid","Other"]},
+      {"id":"start_date","label":"First day","type":"date","required":true},
+      {"id":"end_date","label":"Last day","type":"date","required":true},
+      {"id":"manager_email","label":"Manager email","type":"email","required":true,"maxLength":254},
+      {"id":"handover_plan","label":"Handover plan","type":"textarea","required":true,"maxLength":1000}
+    ]
+  },
+  {
+    "id": "contract-intake",
+    "name": "Contract intake",
+    "area": "Legal operations",
+    "description": "Capture ownership, dates, value, and renewal terms so a qualified reviewer can assess the request.",
+    "reviewer": "Contract owner",
+    "gated_action": "An approved intake record for human review. This workflow does not interpret legal terms.",
+    "fields": [
+      {"id":"counterparty","label":"Counterparty","type":"text","required":true,"maxLength":200},
+      {"id":"contract_type","label":"Contract type","type":"select","required":true,"options":["Supplier","Customer","NDA","Services","Other"]},
+      {"id":"business_owner_email","label":"Business owner email","type":"email","required":true,"maxLength":254},
+      {"id":"start_date","label":"Proposed start date","type":"date","required":true},
+      {"id":"end_date","label":"Proposed end date","type":"date","required":true},
+      {"id":"contract_value","label":"Contract value","type":"number","required":true,"min":0},
+      {"id":"currency","label":"Currency","type":"select","required":true,"options":["USD","EUR","GBP","INR","CAD","AUD"]},
+      {"id":"auto_renewal","label":"Auto-renewal clause present?","type":"select","required":true,"options":["Yes","No","Unknown"]},
+      {"id":"summary","label":"Business context","type":"textarea","required":true,"maxLength":1500}
+    ]
+  },
+  {
+    "id": "lead-qualification",
+    "name": "Lead qualification",
+    "area": "Sales",
+    "description": "Organize an inbound lead's stated need and timing before a salesperson decides whether to follow up.",
+    "reviewer": "Sales owner",
+    "gated_action": "An approved follow-up draft. No customer message is sent.",
+    "fields": [
+      {"id":"company","label":"Company","type":"text","required":true,"maxLength":200},
+      {"id":"contact_email","label":"Contact email","type":"email","required":true,"maxLength":254},
+      {"id":"need","label":"Stated need","type":"textarea","required":true,"maxLength":1500},
+      {"id":"estimated_value","label":"Estimated opportunity value","type":"number","required":false,"min":0},
+      {"id":"timeframe","label":"Stated timeframe","type":"select","required":true,"options":["Within 30 days","This quarter","Later","Not stated"]},
+      {"id":"contact_permission","label":"Permission to follow up recorded?","type":"select","required":true,"options":["Yes","No","Unknown"]}
+    ]
+  },
+  {
+    "id": "sales-quote-approval",
+    "name": "Sales quote approval",
+    "area": "Sales",
+    "description": "Compare a proposed discount with the seller's stated approval limit and prepare a quote review.",
+    "reviewer": "Sales manager",
+    "gated_action": "An approved quote record for manual use. No quote is sent.",
+    "fields": [
+      {"id":"customer","label":"Customer","type":"text","required":true,"maxLength":200},
+      {"id":"customer_email","label":"Customer email","type":"email","required":true,"maxLength":254},
+      {"id":"quote_reference","label":"Quote reference","type":"text","required":true,"maxLength":100},
+      {"id":"amount","label":"Quote amount","type":"number","required":true,"min":0},
+      {"id":"discount_percent","label":"Proposed discount (%)","type":"number","required":true,"min":0,"max":100},
+      {"id":"approval_limit_percent","label":"Your approval limit (%)","type":"number","required":true,"min":0,"max":100,"help":"Enter the limit from your organization's sales policy."},
+      {"id":"expires_on","label":"Quote expiry date","type":"date","required":true},
+      {"id":"summary","label":"Scope summary","type":"textarea","required":true,"maxLength":1000}
+    ]
+  },
+  {
+    "id": "it-access-request",
+    "name": "IT access request",
+    "area": "IT operations",
+    "description": "Route a named system-access request with its business reason, duration, and manager decision.",
+    "reviewer": "IT access reviewer",
+    "gated_action": "An approved access instruction for manual fulfillment. No account or permission is changed.",
+    "fields": [
+      {"id":"requester_email","label":"Requester email","type":"email","required":true,"maxLength":254},
+      {"id":"user_email","label":"Person needing access","type":"email","required":true,"maxLength":254},
+      {"id":"system","label":"System","type":"text","required":true,"maxLength":160},
+      {"id":"role","label":"Requested role","type":"select","required":true,"options":["Read only","Standard","Elevated","Administrator"]},
+      {"id":"business_reason","label":"Business reason","type":"textarea","required":true,"maxLength":1000},
+      {"id":"duration_days","label":"Access duration (days)","type":"number","required":true,"min":1,"max":3650},
+      {"id":"manager_approval","label":"Manager approval recorded?","type":"select","required":true,"options":["Yes","No","Unknown"]}
+    ]
+  },
+  {
+    "id": "inventory-reorder",
+    "name": "Inventory reorder review",
+    "area": "Operations",
+    "description": "Compare stock on hand with a team-provided reorder point and calculate a suggested quantity.",
+    "reviewer": "Inventory owner",
+    "gated_action": "An approved reorder suggestion for manual procurement. No supplier order is placed.",
+    "fields": [
+      {"id":"item_code","label":"Item code","type":"text","required":true,"maxLength":100},
+      {"id":"item_name","label":"Item","type":"text","required":true,"maxLength":200},
+      {"id":"stock_on_hand","label":"Stock on hand","type":"number","required":true,"min":0},
+      {"id":"reorder_point","label":"Reorder point","type":"number","required":true,"min":0},
+      {"id":"target_stock","label":"Target stock","type":"number","required":true,"min":0},
+      {"id":"supplier","label":"Supplier","type":"text","required":true,"maxLength":200},
+      {"id":"unit_cost","label":"Unit cost","type":"number","required":true,"min":0},
+      {"id":"currency","label":"Currency","type":"select","required":true,"options":["USD","EUR","GBP","INR","CAD","AUD"]},
+      {"id":"lead_time_days","label":"Supplier lead time (days)","type":"number","required":true,"min":0,"max":3650}
+    ]
+  },
+  {
+    "id": "policy-exception",
+    "name": "Policy exception intake",
+    "area": "Risk and compliance",
+    "description": "Record a reported policy exception, capture containment status, and route it to a designated reviewer.",
+    "reviewer": "Risk owner",
+    "gated_action": "An approved escalation record. No external notification is sent.",
+    "fields": [
+      {"id":"reporter_email","label":"Reporter email","type":"email","required":true,"maxLength":254},
+      {"id":"policy_area","label":"Policy area","type":"text","required":true,"maxLength":160},
+      {"id":"occurred_on","label":"Date observed","type":"date","required":true},
+      {"id":"severity","label":"Assessed severity","type":"select","required":true,"options":["Low","Moderate","High","Unknown"]},
+      {"id":"contained","label":"Issue contained?","type":"select","required":true,"options":["Yes","No","Unknown"]},
+      {"id":"description","label":"What happened? Redact credentials and unnecessary personal data.","type":"textarea","required":true,"maxLength":2000}
+    ]
+  }
+]

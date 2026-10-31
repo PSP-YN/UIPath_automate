@@ -8,3 +8,14 @@ venv/
 *.sqlite3-shm
 *.sqlite3-wal
 UiPath_Contest_Regulation_Agents_at_Work_Maestro_Automate_Challenge.pdf
+.env
+.env.*
+!.env.example
+.vercel/
+/.next/
+web/node_modules/
+web/.next/
+web/out/
+web/.vercel/
+supabase/.branches/
+supabase/.temp/

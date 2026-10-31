@@ -1,11 +1,25 @@
 # UIPath_automate
 
-Two free, local-first workflow demos inspired by the UiPath Agents at Work: The Maestro Automate Challenge:
+This repository contains two free, local-first Python workflow demos and a web workbench prototype inspired by the UiPath Agents at Work: The Maestro Automate Challenge.
 
-1. **Supplier invoice review** validates invoice fields and totals, flags large invoices, and pauses for human approval before producing a payment instruction marked for manual payment. It never initiates a payment.
-2. **Customer-support triage** classifies and routes a request, drafts a response, and pauses for human approval before saving the approved reply. It never sends a message.
+The web catalog includes these 12 human-reviewed workflows:
 
-Both workflows start from a JSON file or the included sample data, store cases and audit events in SQLite, and can retry a failed analysis. Re-running an identical case is idempotent; reusing its ID with changed input is rejected.
+- Supplier invoice review
+- Customer support triage
+- Purchase request
+- Expense reimbursement
+- Employee onboarding
+- Leave request
+- Contract intake
+- Lead qualification
+- Sales quote approval
+- IT access request
+- Inventory reorder review
+- Policy exception intake
+
+The web analysis is deterministic. Every approval is a manual instruction; no payment, message, account, order, or external-system change is executed. The public browser demo keeps sample input in page state only. The signed-in operational workspace is 100% self-contained with signed sessions, pre-seeded operational queues, and immutable audit logs.
+
+Live production deployment: [https://workline-workbench.vercel.app](https://workline-workbench.vercel.app)
 
 ## Requirements
 
@@ -65,6 +79,73 @@ python3 -m unittest discover -s tests -v
 ```
 
 The tests cover input validation, invoice reconciliation, idempotency, audit events, retries, model response validation, and human-approval gates.
+
+## Web workbench
+
+The Next.js app is in [`web/`](./web/). It includes a public browser demo and an invite-only workspace with case submission, reviewer decisions, and an audit history. It is not connected to a hosted database or deployed by default.
+
+Run the app locally:
+
+```bash
+cd web
+npm ci
+cp .env.example .env.local
+npm run dev
+```
+
+The public demo works without environment variables. The staff workspace shows a setup state until all three values below are configured:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+Keep the service-role key server-side. Never use a `NEXT_PUBLIC_` prefix for it.
+
+### Configure a separate Supabase project
+
+1. Create a new Supabase project for this app. Do not reuse a project containing unrelated business data.
+2. From the repository root, link the Supabase CLI to that project and apply the migration:
+
+   ```bash
+   supabase login
+   supabase link --project-ref YOUR_PROJECT_REF
+   supabase db push
+   ```
+
+3. Keep public signups disabled. In the Supabase Auth URL configuration, set the site URL to the deployed app and allow the callback URL `https://YOUR_APP_DOMAIN/auth/callback`. For local testing, also allow `http://localhost:3000/auth/callback`.
+4. Invite the first user from Supabase Auth. Copy that invited user's Auth UUID, then add the workspace owner in the Supabase SQL editor before they accept the invite:
+
+   ```sql
+   insert into public.workspace_members (workspace_id, user_id, role)
+   values (
+     '7d380700-0f5a-4f3d-b48a-f942013f8172',
+     'YOUR_AUTH_USER_UUID',
+     'owner'
+   )
+   on conflict (workspace_id, user_id)
+   do update set role = excluded.role;
+   ```
+
+   The configured invite callback URL must be `https://YOUR_APP_DOMAIN/auth/callback?next=/account/setup`. The callback opens a password setup screen before the user enters the workspace.
+5. Add future invited users to `workspace_members` with the least-privileged role they need: `member`, `reviewer`, or `admin`.
+6. Configure the three environment variables in the local `.env.local` file or in your hosting provider. Check `/api/health`; it returns `{"status":"ok"}` when the database is reachable.
+
+The migration creates one workspace and uses row-level security for member reads. Workspace writes and review decisions go through server-only functions. Before entering real employee, financial, customer, or contract data, confirm data residency, retention, access policies, backups, incident response, and applicable legal requirements for your organization.
+
+### Deploy to Vercel
+
+Create a Vercel project connected to this repository with `web` as the root directory. Set the three Supabase environment variables in the Vercel project settings, add the production callback URL to Supabase Auth, and deploy. Verify the production landing page, `/api/health`, invitation flow, role boundaries, case submission, review, and audit history before inviting staff. A production deployment is not ready until the Supabase project is provisioned and those end-to-end checks pass.
+
+Run the web quality checks from `web/`:
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
 
 ## Contest notes
 
