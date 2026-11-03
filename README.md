@@ -150,3 +150,11 @@ npm run build
 ## Contest notes
 
 The provided rules call for an end-to-end Maestro Automate project, coding-agent collaboration, multiple actors, testing, and a narrated demo video. This repository provides runnable local workflow prototypes, not a deployed UiPath Maestro project. The default engine is deterministic; the optional local model adds AI-assisted analysis but does not connect to UiPath Maestro or external business systems. Before a contest submission, import or recreate these flows in Maestro, record and link the required narrated video, and complete the official submission form. The source regulation PDF is intentionally not redistributed in this public repository.
+
+
+## Project documentation
+
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security policy](SECURITY.md)
+- [Changelog](CHANGELOG.md)
